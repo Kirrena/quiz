@@ -16,6 +16,8 @@ var timeEl=document.getElementById("time");
 var submitButton=document.getElementById("submit");
 //select initial input text
 var initials=document.getElementById("initials");
+//select final score
+var finalScore=document.getElementById("final-score");
 
 //Trigger by pressing start button, executing displayQuestions 
 startButton.addEventListener("click", function(){
@@ -86,6 +88,8 @@ function gameOver(){
       showQuestions.setAttribute("class", "hide"); 
       endScreen.setAttribute("class", "start");
       clearInterval(timerInterval);
+      finalScore.textContent=secondsLeft;
+      localStorage.setItem("user", user);
    }
 
 }
@@ -124,11 +128,12 @@ function startTimer() {
        if (secondsLeft <= 0) {
            clearInterval(timerInterval);
            gameOver();
+           localStorage.setItem("score", secondsLeft);
        }
    }, 1000);
 }
 
-//storing initials and score  
+//create user initial string and score  
 submitButton.addEventListener("click", function(){
    var user= initials.value.trim();
    // validate the fields
@@ -136,6 +141,6 @@ submitButton.addEventListener("click", function(){
    displayMessage("error", "Initials cannot be blank");
   }
   else{
-   localStorage.setItem("user", user);
+   window.location.href="highscores.html";
   } 
 });
