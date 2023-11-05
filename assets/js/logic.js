@@ -12,18 +12,24 @@ var startScreen=document.getElementById("start-screen");
 var endScreen=document.getElementById("end-screen");
 //Select timer
 var timeEl=document.getElementById("time");
+//select submit button
+var submitButton=document.getElementById("submit");
+//select initial input text
+var initials=document.getElementById("initials");
 
 //Trigger by pressing start button, executing displayQuestions 
-startButton.addEventListener("click", displayQuestions);
-    
+startButton.addEventListener("click", function(){
+//switch hide and start class with setAttribute
+   startScreen.setAttribute("class", "hide");
+   showQuestions.setAttribute("class", "start");
+   displayQuestions();
+   setTime();
+});
 
 
 var questionNr=0;
 function displayQuestions(){
-     //switch hide and start class with setAttribute
-     startScreen.setAttribute("class", "hide");
-     showQuestions.setAttribute("class", "start");
-     setTime();
+     
         //start to display the questions from questions array
         actualQuestion.textContent=questions[questionNr].question;
         //creating answers buttons
@@ -61,7 +67,7 @@ function displayQuestions(){
 
       // Display the next question
       displayQuestions(questionNr);
-   
+      startTimer();
       }
       //else navigate to scoring HTML part
       else{
@@ -79,6 +85,7 @@ function gameOver(){
       feedback.remove();
       showQuestions.setAttribute("class", "hide"); 
       endScreen.setAttribute("class", "start");
+      clearInterval(timerInterval);
    }
 
 }
@@ -95,26 +102,40 @@ function gameOver(){
       else{
          feedback.textContent = "Wrong";
          document.body.appendChild(feedback);
+         secondsLeft -= 10;
       }  
       
     }
   //Set timer
-  var secondsLeft = 75;  
+  var secondsLeft = 75;
+  var timerInterval;  
 
-  function setTime(){
-   //Sets Interval in a variable
-   var timeInterval = setInterval(function(){
-     secondsLeft--;
-     timeEl.textContent=secondsLeft;
+  function setTime() {
+   timeEl.textContent = secondsLeft;
+   startTimer();
+}
 
-     if (secondsLeft===0){
-      //Stop execution of action at set interval
-      clearInterval(timeInterval);
-      //Go to scoring part
-      gameOver();
-     }
-   },1000);
+function startTimer() {
+   clearInterval(timerInterval);
+   timerInterval = setInterval(function () {
+       secondsLeft--;
+       timeEl.textContent = secondsLeft;
+       //Go to scoring part
+       if (secondsLeft <= 0) {
+           clearInterval(timerInterval);
+           gameOver();
+       }
+   }, 1000);
+}
 
-
-  }  
-
+//storing initials and score  
+submitButton.addEventListener("click", function(){
+   var user= initials.value.trim();
+   // validate the fields
+  if (user=== "") {
+   displayMessage("error", "Initials cannot be blank");
+  }
+  else{
+   localStorage.setItem("user", user);
+  } 
+});
