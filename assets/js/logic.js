@@ -88,8 +88,10 @@ function gameOver(){
       showQuestions.setAttribute("class", "hide"); 
       endScreen.setAttribute("class", "start");
       clearInterval(timerInterval);
+      
       finalScore.textContent=secondsLeft;
-      localStorage.setItem("user", user);
+      
+      localStorage.setItem("score", secondsLeft);
    }
 
 }
@@ -102,11 +104,15 @@ function gameOver(){
       if (answerData[1]=="Correct"){
          feedback.textContent ="Correct";
          document.body.appendChild(feedback);
+         //const audio = new Audio("sfx/correct.wav");
+         //audio.play();
         }
       else{
          feedback.textContent = "Wrong";
          document.body.appendChild(feedback);
          secondsLeft -= 10;
+         //const audio = new Audio("sfx/incorrect.wav");
+         //audio.play();
       }  
       
     }
@@ -128,7 +134,7 @@ function startTimer() {
        if (secondsLeft <= 0) {
            clearInterval(timerInterval);
            gameOver();
-           localStorage.setItem("score", secondsLeft);
+           
        }
    }, 1000);
 }
@@ -136,11 +142,13 @@ function startTimer() {
 //create user initial string and score  
 submitButton.addEventListener("click", function(){
    var user= initials.value.trim();
-   // validate the fields
-  if (user=== "") {
-   displayMessage("error", "Initials cannot be blank");
-  }
-  else{
+      // validate the fields
+      if (user=== "") {
+      alert("Initials cannot be blank");
+      }
+      else{
+         localStorage.setItem("user", user);
+      }
    window.location.href="highscores.html";
-  } 
+  
 });

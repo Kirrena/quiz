@@ -1,7 +1,7 @@
 //select final score
-var finalScore=document.getElementById("final-score");
+var highScores=document.getElementById("highscores");
 
 function getScore() {
     // Retrieve the score from localStorage
-    finalScore.textContent = localStorage.getItem("score");
+   highScores.textContent=localStorage.getItem("score");
 }
