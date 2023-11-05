@@ -10,9 +10,12 @@ var showChoices=document.getElementById("choices");
 var startScreen=document.getElementById("start-screen");
 //Select div with end-screen Id to make possible to hide swicthing class
 var endScreen=document.getElementById("end-screen");
+//Select timer
+var timeEl=document.getElementById("time");
 
 //Trigger by pressing start button, executing displayQuestions 
 startButton.addEventListener("click", displayQuestions);
+    
 
 
 var questionNr=0;
@@ -20,7 +23,7 @@ function displayQuestions(){
      //switch hide and start class with setAttribute
      startScreen.setAttribute("class", "hide");
      showQuestions.setAttribute("class", "start");
-    
+     setTime();
         //start to display the questions from questions array
         actualQuestion.textContent=questions[questionNr].question;
         //creating answers buttons
@@ -62,19 +65,24 @@ function displayQuestions(){
       }
       //else navigate to scoring HTML part
       else{
-         // Remove existing answer buttons
-         document.querySelectorAll(".button").forEach(function (button) {
-         button.remove();})
-         // Remove feedback if it exists
-         var feedback = document.querySelector(".feedback");
-         if (feedback) {
-         feedback.remove();
-         showQuestions.setAttribute("class", "hide"); 
-         endScreen.setAttribute("class", "start");
-      }
+         gameOver();
          
    }
 }
+function gameOver(){
+   // Remove existing answer buttons
+   document.querySelectorAll(".button").forEach(function (button) {
+      button.remove();})
+      // Remove feedback if it exists
+      var feedback = document.querySelector(".feedback");
+      if (feedback) {
+      feedback.remove();
+      showQuestions.setAttribute("class", "hide"); 
+      endScreen.setAttribute("class", "start");
+   }
+
+}
+
 
    //checking the answer is correct or wrong, display in a new div
    function answerClick(answerData) {
@@ -90,5 +98,23 @@ function displayQuestions(){
       }  
       
     }
-    console.log(questionNr);
+  //Set timer
+  var secondsLeft = 75;  
+
+  function setTime(){
+   //Sets Interval in a variable
+   var timeInterval = setInterval(function(){
+     secondsLeft--;
+     timeEl.textContent=secondsLeft;
+
+     if (secondsLeft===0){
+      //Stop execution of action at set interval
+      clearInterval(timeInterval);
+      //Go to scoring part
+      gameOver();
+     }
+   },1000);
+
+
+  }  
 
