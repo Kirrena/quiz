@@ -37,7 +37,8 @@ function displayQuestions(){
               if (feedback) {
               feedback.remove();
     }
-              nextQuestion(); 
+          
+            nextQuestion(); 
          });
       
       });
@@ -47,7 +48,7 @@ function displayQuestions(){
   //function for the following question
    function nextQuestion(){
        //validating if we still have questions
-     if(questionNr<questions.length) { 
+     if(questionNr<questions.length-1) { 
          questionNr++;
         // Remove existing answer buttons
         document.querySelectorAll(".button").forEach(function (button) {
@@ -55,17 +56,25 @@ function displayQuestions(){
          
         });
 
-     // Display the next question
-     displayQuestions();
+      // Display the next question
+      displayQuestions(questionNr);
    
       }
-      //else navigate to scoring HTML
+      //else navigate to scoring HTML part
       else{
+         // Remove existing answer buttons
+         document.querySelectorAll(".button").forEach(function (button) {
+         button.remove();})
+         // Remove feedback if it exists
+         var feedback = document.querySelector(".feedback");
+         if (feedback) {
+         feedback.remove();
          showQuestions.setAttribute("class", "hide"); 
          endScreen.setAttribute("class", "start");
       }
-
+         
    }
+}
 
    //checking the answer is correct or wrong, display in a new div
    function answerClick(answerData) {
@@ -81,4 +90,5 @@ function displayQuestions(){
       }  
       
     }
-console.log(document);
+    console.log(questionNr);
+
