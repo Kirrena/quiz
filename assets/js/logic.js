@@ -114,15 +114,15 @@ function gameOver(){
       if (answerData[1]=="Correct"){
          feedback.textContent ="Correct";
          document.body.appendChild(feedback);
-         //const audio = new Audio("sfx/correct.wav");
-         //audio.play();
+         var audio = new Audio("sfx/correct.wav");
+         audio.play();
         }
       else{
          feedback.textContent = "Wrong";
          document.body.appendChild(feedback);
          secondsLeft -= 10;
-         //const audio = new Audio("sfx/incorrect.wav");
-         //audio.play();
+         var audio = new Audio("sfx/incorrect.wav");
+         audio.play();
       }  
       
     }
