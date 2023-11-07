@@ -28,19 +28,24 @@ startButton.addEventListener("click", function(){
    setTime();
 });
 
-
+//User object to store highscores with localStorage
+var user={};
 var questionNr=0;
+//create an ordered list for answer buttons
+var answerList = document.createElement("ol");
+
+
 function displayQuestions(){
      
         //start to display the questions from questions array
         actualQuestion.textContent=questions[questionNr].question;
-        //creating answers buttons
+        //creating answers buttons in li items
         questions[questionNr].answer.forEach(function (answerData, j) {
          var answerButton = document.createElement("button");
          answerButton.setAttribute("class", "button");
-         answerButton.textContent = answerData[0];
-         document.body.appendChild(answerButton);
-         //Check the answer, display in a newly created div
+         answerButton.textContent = (j + 1)+ ". "+answerData[0];
+         
+         //Check the answer
          answerButton.addEventListener("click", function () {
               answerClick(answerData);
               // Remove feedback if it exists
@@ -51,7 +56,12 @@ function displayQuestions(){
           
             nextQuestion(); 
          });
-      
+         
+         //append buttons
+         answerList.appendChild(answerButton);
+         // Append the ordered list to the document
+         showChoices.appendChild(answerList);
+
       });
        
       }
@@ -90,8 +100,8 @@ function gameOver(){
       clearInterval(timerInterval);
       
       finalScore.textContent=secondsLeft;
+      user.score=secondsLeft;
       
-      localStorage.setItem("score", secondsLeft);
    }
 
 }
@@ -141,14 +151,19 @@ function startTimer() {
 
 //create user initial string and score  
 submitButton.addEventListener("click", function(){
-   var user= initials.value.trim();
+      user.initial= initials.value.trim();
       // validate the fields
-      if (user=== "") {
+      if (user.initial=== "") {
       alert("Initials cannot be blank");
+      return;
       }
-      else{
-         localStorage.setItem("user", user);
-      }
+      //Convert the user object to a JSON string
+      var userJSON = JSON.stringify(user);
+      
+      // Store the JSON string in localStorage under the key "user"
+      localStorage.setItem("user", userJSON);   
    window.location.href="highscores.html";
   
 });
+
+
